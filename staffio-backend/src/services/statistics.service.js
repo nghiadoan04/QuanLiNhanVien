@@ -35,8 +35,8 @@ const buildEmployeeStats = async (employee, startDate, endDate) => {
 
 const getOverview = async (from, to) => {
   const now = new Date();
-  const startDate = from || new Date(now.getFullYear(), now.getMonth(), 1);
-  const endDate = to || new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+  const startDate = from ? new Date(from) : new Date(now.getFullYear(), now.getMonth() - 3, 1);
+  const endDate = to ? new Date(new Date(to).setHours(23, 59, 59, 999)) : new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
 
   const totalEmployees = await Employee.count({ where: { status: 'ACTIVE' } });
 
@@ -75,8 +75,8 @@ const getOverview = async (from, to) => {
 
 const getEmployeeStats = async (from, to) => {
   const now = new Date();
-  const startDate = from || new Date(now.getFullYear(), now.getMonth(), 1);
-  const endDate = to || new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+  const startDate = from ? new Date(from) : new Date(now.getFullYear(), now.getMonth() - 3, 1);
+  const endDate = to ? new Date(new Date(to).setHours(23, 59, 59, 999)) : new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
 
   const employees = await Employee.findAll({
     where: { status: 'ACTIVE' },
@@ -94,8 +94,8 @@ const getEmployeeStats = async (from, to) => {
 
 const getEmployeeStatsById = async (employeeId, from, to) => {
   const now = new Date();
-  const startDate = from || new Date(now.getFullYear(), now.getMonth(), 1);
-  const endDate = to || new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+  const startDate = from ? new Date(from) : new Date(now.getFullYear(), now.getMonth(), 1);
+  const endDate = to ? new Date(new Date(to).setHours(23, 59, 59, 999)) : new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
 
   const employee = await Employee.findByPk(employeeId, {
     include: [{ model: User, as: 'user', attributes: ['email'] }],

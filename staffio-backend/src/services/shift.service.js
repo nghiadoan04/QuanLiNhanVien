@@ -4,6 +4,12 @@ const BadRequestError = require('../exceptions/BadRequestError');
 const NotFoundError = require('../exceptions/NotFoundError');
 const notificationService = require('./notification.service');
 
+// Format TIME field: "08:00:00" or "08:00:00.000000" -> "08:00"
+const formatTime = (time) => {
+  if (!time) return null;
+  return String(time).substring(0, 5);
+};
+
 const toShiftDTO = (shift, registrations) => {
   const approvedCount = registrations
     ? registrations.filter((r) => r.status === 'APPROVED').length
@@ -12,8 +18,8 @@ const toShiftDTO = (shift, registrations) => {
     id: shift.id,
     name: shift.name,
     date: shift.date,
-    startTime: shift.start_time,
-    endTime: shift.end_time,
+    startTime: formatTime(shift.start_time),
+    endTime: formatTime(shift.end_time),
     maxEmployees: shift.max_employees,
     currentRegistrations: approvedCount,
     registeredCount: approvedCount,
@@ -27,8 +33,8 @@ const toRegistrationDTO = (reg) => {
     shiftId: reg.shift_id,
     shiftName: reg.shift ? reg.shift.name : null,
     shiftDate: reg.shift ? reg.shift.date : null,
-    startTime: reg.shift ? reg.shift.start_time : null,
-    endTime: reg.shift ? reg.shift.end_time : null,
+    startTime: reg.shift ? formatTime(reg.shift.start_time) : null,
+    endTime: reg.shift ? formatTime(reg.shift.end_time) : null,
     employeeId: reg.employee_id,
     employeeName: reg.employee ? reg.employee.full_name : null,
     status: reg.status,

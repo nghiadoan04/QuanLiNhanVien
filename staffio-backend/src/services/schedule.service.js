@@ -31,8 +31,8 @@ const getMySchedule = async (employeeId) => {
       id: shift.id,
       name: shift.name,
       date: shift.date,
-      startTime: shift.start_time,
-      endTime: shift.end_time,
+      startTime: shift.start_time ? String(shift.start_time).substring(0, 5) : null,
+      endTime: shift.end_time ? String(shift.end_time).substring(0, 5) : null,
       maxEmployees: shift.max_employees,
       createdAt: shift.created_at,
     };
